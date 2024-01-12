@@ -7,6 +7,12 @@ help:
 install:
 	@composer install
 
+untest:
+	docker exec crm_php ./vendor/bin/phpunit
+
+pesttest:
+	docker exec crm_php ./vendor/bin/pest 
+
 test: 
 	docker exec crm_php php artisan test
 
