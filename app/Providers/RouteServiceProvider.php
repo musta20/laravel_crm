@@ -7,6 +7,8 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -63,7 +65,13 @@ class RouteServiceProvider extends ServiceProvider
         foreach ($this->centralDomains() as $domain) {
             Route::prefix('api')
                 ->domain($domain)
-                ->middleware('api')
+                ->middleware(
+                    [
+                        'api',
+                        InitializeTenancyByDomain::class,
+                        PreventAccessFromCentralDomains::class
+                    ]
+                )
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
         }
@@ -84,7 +92,4 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
-
-
-
 }
