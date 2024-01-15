@@ -1,0 +1,252 @@
+openapi: 3.1.0
+x-stoplight:
+  id: ne1ar9r2f4w74
+info:
+  title: Laravel crm
+  version: '1.0'
+  summary: contact
+  description: api for contacts
+servers:
+  - url: 'https://crm.localhost/api/v1'
+    description: MAIN_DOMAIN
+paths:
+  /Contact:
+    get:
+      summary: Get List Of Contacts
+      tags: []
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/componanta/schemas/ContactWrapper'
+                  - type: object
+                    properties:
+                      attributes:
+                        $ref: '#/componanta/schemas/Contact'
+        '404': 'description:User Not Found'
+      operationId: get-contacts-list
+      description: |-
+        a list of contact objects that you have stored on your account ,
+         this will be scoped to the account that own your access token.
+      x-stoplight:
+        id: 857wqw4w1atax
+      security:
+        - APIKEY: []
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: cashe-control
+          description: 'this describe the length of time this well cash for, this may change closer to deployment '
+    get - copy:
+      summary: Get User Info by User ID
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Get User Alice Smith:
+                  value:
+                    id: 142
+                    firstName: Alice
+                    lastName: Smith
+                    email: alice.smith@gmail.com
+                    dateOfBirth: '1997-10-31'
+                    emailVerified: true
+                    signUpDate: '2019-08-24'
+        '404':
+          description: User Not Found
+      operationId: get-contact-contactid
+      description: 'retreve a list of contact by the id '
+      security:
+        - APIKEY: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: contact-id
+          description: id number of the user
+    parameters: []
+    patch:
+      description: ''
+    post:
+      summary: Store Contact
+      operationId: post-Contact-create
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+              examples:
+                Example 1:
+                  value:
+                    id: string
+                    type: string
+                    attribute:
+                      title: string
+                    name:
+                      first_name: string
+                      middle_name: string
+                      last_name: string
+                      preferred: string
+                      full: string
+                    phone: string
+                    email: string
+      x-stoplight:
+        id: m8tb6ewr1upkm
+      description: |-
+        when adding a new point of caontact on a project, 
+        or when dealinng with a new lead - create new contact to attach information to , 
+        this will be async request, 
+        so this new contact will be create in the background
+      security:
+        - APIKEY: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+  /user:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 12
+                    firstName: Bob
+                    lastName: Fellow
+                    email: bob.fellow@gmail.com
+                    dateOfBirth: '1996-08-24'
+                    emailVerified: false
+                    createDate: '2020-11-18'
+        '400':
+          description: Missing Required Information
+        '409':
+          description: Email Already Taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+              required:
+                - firstName
+                - lastName
+                - email
+                - dateOfBirth
+            examples:
+              Create User Bob Fellow:
+                value:
+                  firstName: Bob
+                  lastName: Fellow
+                  email: bob.fellow@gmail.com
+                  dateOfBirth: '1996-08-24'
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+      x-stoplight:
+        id: u0v8lwguktn27
+components:
+  schemas:
+    Contact:
+      title: Contact
+      type: object
+      x-stoplight:
+        id: 8bszctblr5cr9
+      x-internal: false
+      description: ''
+      properties:
+        title:
+          type: string
+          x-stoplight:
+            id: va6v91fcog1pt
+        name:
+          type: object
+          x-stoplight:
+            id: a9lrq6n7l7uyr
+          required:
+            - preferred
+            - full
+          properties:
+            first_name:
+              type: string
+              x-stoplight:
+                id: 4i8te7iqbq7c9
+            middle_name:
+              type: string
+              x-stoplight:
+                id: 51bpd2efjeohz
+            last_name:
+              type: string
+              x-stoplight:
+                id: vyfkyr6iba5c2
+            preferred:
+              type: string
+              x-stoplight:
+                id: 7j660wlomxt6x
+            full:
+              type: string
+              x-stoplight:
+                id: 873p5rdq02rma
+              readOnly: true
+        phone:
+          type: string
+          x-stoplight:
+            id: 27v9rou94ko4p
+        email:
+          type: string
+          x-stoplight:
+            id: l52jrcmqkt38a
+      required:
+        - attribute
+    ContactWrapper:
+      title: Contact Wrapper
+      x-stoplight:
+        id: o4vwpc5m4565o
+      type: object
+      x-internal: false
+      description: a model  reprsent Contact Wrapper
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        attribute:
+          type: object
+      required:
+        - id
+        - type
+        - attribute
+  securitySchemes:
+    APIKEY:
+      type: http
+      scheme: bearer

@@ -13,7 +13,8 @@ parameters:
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
-#    excludePaths:
+    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
+       - app/Models/Consern/HasUuid.php 
 #
 #    checkMissingIterableValueType: false

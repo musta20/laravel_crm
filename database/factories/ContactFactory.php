@@ -17,7 +17,15 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            //'uuid'=>fake()->uuid(),
+            'title'=>fake()->title(),
+            'first_name'=>fake()->firstName(),
+            'last_name'=>fake()->lastName(),
+            'middle_name'=>fake()->firstName(),
+            'last_name'=>fake()->lastName(),
+            'preferred_name'=>fake()->userName(),
+            'email'=>fake()->safeEmail(),
+            'phone'=>fake()->phoneNumber()
         ];
     }
 }
