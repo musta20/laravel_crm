@@ -17,14 +17,15 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
+        
+      //  return Contact::paginate(10);
         $contacts = QueryBuilder::for(
-            subject:Contact::class
+            subject: Contact::class
         )->paginate(10);
-
+       ///  return $contacts;
         return new JsonResponse(
-            data:ContactResource::collection($contacts),
-            status:Response::HTTP_OK
-
+            data: ContactResource::collection($contacts),
+            status: Response::HTTP_OK,
         );
     }
 }

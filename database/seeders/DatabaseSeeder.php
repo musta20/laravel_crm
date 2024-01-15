@@ -12,6 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if(app()->environment(['local'])){
+            $this->call(
+                class:[
+                    ContactSeeder::class
+                ]
+                );
+        }
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

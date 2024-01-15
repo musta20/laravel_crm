@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('contacts')->as('contacts:')->group(function () {
+        auth()->loginUsingId(App\Models\User::factory()->create()->id);
+
+        //Contact::factory(10)->create();
         route::get('/', App\Http\Controllers\Api\Contacts\IndexController::class)->name('index');
     });
 });
