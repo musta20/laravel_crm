@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Contact;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Nette\Utils\Strings;
 use symfony\component\HttpFoundation\Response;
 
 use function Pest\Laravel\getJson;
@@ -16,6 +15,27 @@ it('it gets an unauthorized respose when not loged in ', function () {
         uri: route(name: 'api:contacts:index')
     )->assertStatus(status: Response::HTTP_UNAUTHORIZED);
 });
+
+
+
+it('its get an unauthorized respons when user is not loged in', function (string $string) {
+
+    postJson(
+        uri: route(name: 'api:contacts:store'),
+        data: [
+            'title' => $string,
+            'name' => [
+                'first' => $string,
+                'middle' => $string,
+                'last' => $string,
+                'preferred' => $string,
+                'full' => "$string $string $string",
+            ],
+            'phone' => $string,
+            'email' => "{$string}@email.com"
+        ]
+    )->assertStatus(Response::HTTP_UNAUTHORIZED);
+})->with(data: 'strings');
 
 
 it('can create new contact', function (string $string) {
@@ -38,8 +58,7 @@ it('can create new contact', function (string $string) {
         ]
     )->assertStatus(Response::HTTP_CREATED)->assertJson(
         fn (AssertableJson $json) =>
-        $json->
-            where('name.first_name', $string)
+        $json->where('name.first_name', $string)
             ->where('type', 'contact')->etc()
 
     );
