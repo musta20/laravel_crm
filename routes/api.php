@@ -21,10 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('contacts')->as('contacts:')->group(function () {
-        auth()->loginUsingId(App\Models\User::factory()->create()->id);
+       //auth()->loginUsingId(App\Models\User::factory()->create()->id);
 
         //Contact::factory(10)->create();
         route::get('/', App\Http\Controllers\Api\Contacts\IndexController::class)->name('index');
+        route::post('/', App\Http\Controllers\Api\Contacts\StoreController::class)->name('store');
     });
 });
 
