@@ -1,8 +1,11 @@
 <?php
-namespace App\Actions\Contacts;
 
-use App\Contracts\ValueObjectContract;
+namespace Domains\Contact\Actions;
+
+use Domains\Contact\Contracts\ValueObjectContract;
+
 use App\Models\Contact;
+
 
 final class CreateNewContact
 {

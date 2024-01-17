@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
         //Contact::factory(10)->create();
         route::get('/', App\Http\Controllers\Api\Contacts\IndexController::class)->name('index');
         route::post('/', App\Http\Controllers\Api\Contacts\StoreController::class)->name('store');
+        route::get('{uuid}', App\Http\Controllers\Api\Contacts\ShowController::class)->name('show');
     });
 });
 

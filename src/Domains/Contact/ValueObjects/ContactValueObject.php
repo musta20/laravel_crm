@@ -1,8 +1,8 @@
 <?php
 
-namespace App\ValueObjects;
+namespace  Domains\Contact\ValueObjects;
 
-use App\Contracts\ValueObjectContract;
+use Domains\Contact\Contracts\ValueObjectContract;
 
 final class ContactValueObject implements ValueObjectContract
 {

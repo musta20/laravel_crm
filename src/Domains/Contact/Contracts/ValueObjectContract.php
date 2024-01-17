@@ -1,5 +1,5 @@
 <?php
-namespace App\Contracts;
+namespace  Domains\Contact\Contracts;
 
 
 interface ValueObjectContract

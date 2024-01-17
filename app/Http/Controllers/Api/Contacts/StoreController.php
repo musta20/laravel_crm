@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Contacts;
 
-use App\Actions\Contacts\CreateNewContact;
-use App\Factories\ContactFactory;
+use Domains\Contact\Actions\CreateNewContact;
+use Domains\Contact\Factories\ContactFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Contacts\StoreRequest;
 use App\Http\Resources\Api\ContactResource;
@@ -17,7 +17,6 @@ class StoreController extends Controller
      */
     public function __invoke(StoreRequest $request)
     {
-
         return new JsonResponse(
             data:  new ContactResource(CreateNewContact::handel(
                 object: ContactFactory::make(

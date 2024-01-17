@@ -18,7 +18,7 @@ it('it gets an unauthorized respose when not loged in ', function () {
 
 
 
-it('its get an unauthorized respons when user is not loged in', function (string $string) {
+it('its 401 when trying tstore contatct when not authraized', function (string $string) {
 
     postJson(
         uri: route(name: 'api:contacts:store'),
@@ -36,6 +36,40 @@ it('its get an unauthorized respons when user is not loged in', function (string
         ]
     )->assertStatus(Response::HTTP_UNAUTHORIZED);
 })->with(data: 'strings');
+
+it('its get 401 when trying retrve a contact by its uuid', function () {
+    $contact = Contact::factory()->create();
+
+    getJson(
+        uri: route(name: 'api:contacts:show', parameters: [$contact->uuid]),
+    )->assertStatus(status: Response::HTTP_UNAUTHORIZED);
+});
+
+it('its get 404 when uuid not found', function () {
+    auth()->loginUsingId(App\Models\User::factory()->create()->id);
+
+    getJson(
+        uri: route(name: 'api:contacts:show', parameters: ['test']),
+    )->assertStatus(status: Response::HTTP_NOT_FOUND);
+});
+
+
+it('can retrve a contact by its uuid', function () {
+    $contact = Contact::factory()->create();
+    auth()->loginUsingId(App\Models\User::factory()->create()->id);
+
+    getJson(
+        uri: route(name: 'api:contacts:show', parameters: [$contact->uuid]),
+    )->assertStatus(status: Response::HTTP_OK)->assertJson(
+        fn (AssertableJson $json) =>
+        $json
+            ->where('name.first_name', $contact->first_name)
+            ->where('title', $contact->title)
+            //->where('uuid', $contact->uuid)
+            ->where('type', 'contact')->etc()
+
+    );
+});
 
 
 it('can create new contact', function (string $string) {

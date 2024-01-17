@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Factories;
+namespace  Domains\Contact\Factories;
 
-use App\ValueObjects\ContactValueObject;
+use Domains\Contact\ValueObjects\ContactValueObject;
 
 
 final class ContactFactory

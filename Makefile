@@ -19,6 +19,9 @@ test:
 migrate: 
 	@docker exec crm_php php artisan migrate
 
+migrate-fresh: 
+	@docker exec crm_php php artisan migrate:fresh 
+
 analyse:
 	./vendor/bin/phpstan analyse
 
