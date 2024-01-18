@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  //  dd();
+  $contacts = Contact::take(10)->get();
+  return $contacts;
+    //return view('welcome');
 });
+
+
 
 Route::get('/API', function () {
     return "API ROUTE WORK";

@@ -8,6 +8,9 @@ return [
      */
     'auto_discover_projectors_and_reactors' => [
         app()->path(),
+      //  base_path(),
+       // base_path()
+
     ],
 
     /*
@@ -23,6 +26,7 @@ return [
      */
     'projectors' => [
         // App\Projectors\YourProjector::class
+        //Domains\Contact\Handlers\ContactHandler::class
     ],
 
     /*

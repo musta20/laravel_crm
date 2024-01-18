@@ -3,6 +3,10 @@
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use  App\Http\Controllers\Api\Contacts\IndexController;
+use App\Http\Controllers\Api\Contacts\ShowController;
+use App\Http\Controllers\Api\Contacts\StoreController;
+use App\Http\Controllers\Api\Contacts\UpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,12 +25,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('contacts')->as('contacts:')->group(function () {
-       //auth()->loginUsingId(App\Models\User::factory()->create()->id);
-
+        
+        //auth()->loginUsingId(App\Models\User::factory()->create()->id);
         //Contact::factory(10)->create();
-        route::get('/', App\Http\Controllers\Api\Contacts\IndexController::class)->name('index');
-        route::post('/', App\Http\Controllers\Api\Contacts\StoreController::class)->name('store');
-        route::get('{uuid}', App\Http\Controllers\Api\Contacts\ShowController::class)->name('show');
+        
+        route::get('/',IndexController::class)->name('index');
+        route::post('/',StoreController::class)->name('store');
+        route::get('{uuid}',ShowController::class)->name('show');
+        route::put('{uuid}',UpdateController::class)->name('update');
     });
 });
 
