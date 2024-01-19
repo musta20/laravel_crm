@@ -19,7 +19,7 @@ test:
 migrate: 
 	@docker exec crm_php php artisan migrate
 
-migrate-fresh: 
+fresh: 
 	@docker exec crm_php php artisan migrate:fresh 
 
 analyse:

@@ -30,6 +30,8 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
+ * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
+ * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
  * @mixin \Eloquent
  */
 class Tenant extends BaseTenant implements TenantWithDataBase

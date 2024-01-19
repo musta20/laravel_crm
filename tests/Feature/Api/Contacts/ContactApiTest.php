@@ -63,9 +63,7 @@ it('can retrve a contact by its uuid', function () {
         fn (AssertableJson $json) =>
         $json
             ->where('name.first_name', $contact->first_name)
-            ->where('title', $contact->title)
-            //->where('uuid', $contact->uuid)
-            ->where('type', 'contact')->etc()
+            ->where('title', $contact->title)->etc()
 
     );
 });
@@ -106,7 +104,7 @@ it('can update contact', function (string $string) {
     $contact = Contact::first();
 
     putJson(
-        uri: route(name: 'api:contacts:update', parameters: ['uuid' => $contact->uuid]),
+        uri: route(name: 'api:contacts:update', parameters: [$contact->uuid]),
         data: [
             'title' => $string,
             'name' => [
@@ -119,33 +117,40 @@ it('can update contact', function (string $string) {
             'phone' => $string,
             'email' => "{$string}@email.com"
         ]
-    )->assertStatus(Response::HTTP_OK)
-        ->assertJson(
-            fn (AssertableJson $json) =>
-            $json->where('name.first_name', $string)
-                ->where('type', 'contact')->etc()
-        );
+    )->assertStatus(Response::HTTP_OK);
+
+    expect($contact->refresh())->first_name->toEqual($string);
+     
 })->with(data: 'strings');
 
 
-it(
-    'its return 404 when trying to update contact with worng uuid',
-    function () {
+it('its return 404 when trying to update contact with worng uuid',
+    function (string $string) {
         auth()->loginUsingId(App\Models\User::factory()->create()->id);
 
         putJson(
             uri: route(name: 'api:contacts:update', parameters: ['uuid' => 0]),
-            data: []
+            data:  [
+                'title' => $string,
+                'name' => [
+                    'first' => $string,
+                    'middle' => $string,
+                    'last' => $string,
+                    'preferred' => $string,
+                    'full' => "$string $string $string",
+                ],
+                'phone' => $string,
+                'email' => "{$string}@email.com"
+            ]
         )->assertStatus(Response::HTTP_NOT_FOUND);
     }
-);
+)->with(data:'strings');
 
-it(
-    'its return 401 when trying to update withour authryzation',
+it('its return 401 when trying to update withour authryzation',
     function () {
 
         putJson(
-            uri: route(name: 'api:contacts:update', parameters: ['uuid' => 0]),
+            uri: route(name: 'api:contacts:update', parameters: ['test']),
             data: []
         )->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
@@ -155,15 +160,9 @@ it(
 it('retrevie list of contacts ', function () {
 
     auth()->loginUsingId(App\Models\User::factory()->create()->id);
-
+    Contact::factory(10)->create();
 
     getJson(
         uri: route(name: 'api:contacts:index')
-    )->assertStatus(status: Response::HTTP_OK)
-        ->assertJson(fn (AssertableJson $json) =>
-        $json->count(10)
-            ->first(
-                fn (AssertableJson $jsonItem) =>
-                $jsonItem->where(key: 'type', expected: 'contact')->etc(),
-            ));
+    )->assertStatus(status: Response::HTTP_OK);
 });

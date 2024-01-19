@@ -60,4 +60,15 @@ class Contact extends Model
         'phone'
     ];
 
+
+
+
+    public function interactions (){
+
+        return $this->hasMany(
+            related:Interaction::class,
+            foreignKey:'contact_id'
+        );
+    }
+
 }
